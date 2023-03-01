@@ -8,12 +8,12 @@ public class FirstControllers {
 
     @GetMapping
     public String recipeSite(){
-        return "Приложение запущено";
+        return " Приложение запущено! ";
     }
 
     @GetMapping("info")
     public String printInfo(){
-        return " имя ученика: Сергей \n" +
+        return  "   имя ученика: Сергей \n" +
                 "   название проекта: RecipeSiteApp \n" +
                 "   дата создания проекта: 27.02.2023 \n" +
                 "   описание проекта: Приложение для сайта рецептов" ;
