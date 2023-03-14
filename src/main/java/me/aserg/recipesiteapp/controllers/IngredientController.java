@@ -2,26 +2,54 @@ package me.aserg.recipesiteapp.controllers;
 
 import me.aserg.recipesiteapp.model.Ingredient;
 import me.aserg.recipesiteapp.services.IngredientService;
-import me.aserg.recipesiteapp.services.impl.IngredientServiceImpl;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/recipe/ingredient")
 public class IngredientController {
-    IngredientService ingredientService;
+    private final IngredientService ingredientService;
+
+    public IngredientController(IngredientService ingredientService) {
+        this.ingredientService = ingredientService;
+    }
 
     @GetMapping("/add")
-    public void add(@RequestParam String name, @RequestParam int count, @RequestParam String measureUnit){
+    public String add(@RequestParam String name, @RequestParam int count, @RequestParam String measureUnit){
         Ingredient ingredient = new Ingredient(name,count,measureUnit);
         ingredientService.add(ingredient);
+        return "Ингредиент " + name + " добавлен";
     }
 
-    @GetMapping
-    public Ingredient get(@RequestParam int id){
-       return ingredientService.get(id);
+    @GetMapping("/get")
+    public String get(@RequestParam int id){
+       return ingredientService.get(id).toString();
     }
+
+    @GetMapping("/get/all")
+    public String getAll(){
+        return ingredientService.getAll().toString();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Ingredient> editIngredient (@RequestBody Ingredient ingredient, @PathVariable int id){
+        Ingredient ingredient1 = ingredientService.get(id);
+        if (ingredient1 == null){
+            return ResponseEntity.notFound().build();
+        }
+        ingredientService.edit(ingredient, id);
+        return ResponseEntity.ok(ingredient);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteIngredient(@PathVariable int id){
+        Ingredient ingredient1 = ingredientService.get(id);
+        if (ingredient1 == null){
+            return ResponseEntity.notFound().build();
+        }
+        ingredientService.deleteIngredient(id);
+        return ResponseEntity.ok().build();
+    }
+
 
 }
