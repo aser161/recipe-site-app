@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/recipe")
@@ -41,8 +42,8 @@ public class RecipeController {
     }
 
     @GetMapping("/get/all")
-    public String getAll(){
-        return recipeService.getAll().toString();
+    public Map<Integer, Recipe> getAll(){
+        return recipeService.getAll();
     }
 
     @PutMapping("/{id}")

@@ -5,6 +5,8 @@ import me.aserg.recipesiteapp.services.IngredientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/recipe/ingredient")
 public class IngredientController {
@@ -22,13 +24,13 @@ public class IngredientController {
     }
 
     @GetMapping("/get")
-    public String get(@RequestParam int id){
-       return ingredientService.get(id).toString();
+    public Ingredient get(@RequestParam int id){
+        return ingredientService.get(id);
     }
 
     @GetMapping("/get/all")
-    public String getAll(){
-        return ingredientService.getAll().toString();
+    public Map<Integer,Ingredient> getAll(){
+        return ingredientService.getAll();
     }
 
     @PutMapping("/{id}")

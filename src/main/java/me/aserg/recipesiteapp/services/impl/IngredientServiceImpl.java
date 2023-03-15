@@ -24,12 +24,8 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public Ingredient[] getAll(){
-        Ingredient [] allIngredient = new Ingredient[counter+1];
-        for (int i = 0; i < counter+1; i++) {
-            allIngredient[i] = get(i);
-        }
-        return allIngredient;
+    public Map<Integer,Ingredient> getAll(){
+        return ingredients;
     }
 
     @Override

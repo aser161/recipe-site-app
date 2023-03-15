@@ -25,12 +25,8 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe [] getAll(){
-        Recipe [] allRecipe = new Recipe[counter+1];
-        for (int i = 0; i < counter+1; i++) {
-            allRecipe[i] = get(i);
-        }
-        return allRecipe;
+    public Map<Integer, Recipe> getAll(){
+        return recipes;
     }
 
     @Override
