@@ -1,6 +1,7 @@
 package me.aserg.recipesiteapp.services;
 
-public interface FileService {
+public interface FileRecipeService {
+
     boolean saveToFile(String json);
 
     String readFromFile();

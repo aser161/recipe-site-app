@@ -1,20 +1,19 @@
 package me.aserg.recipesiteapp.services.impl;
 
-import me.aserg.recipesiteapp.services.FileService;
+import me.aserg.recipesiteapp.services.FileRecipeService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
 @Service
-public class FileServiceImpl implements FileService {
-
-    @Value("${src/main/resources}")
+public class FileRecipeServiceImpl implements FileRecipeService {
+    @Value("${path.to.data1.file}")
     private String dataFilePath;
 
-    @Value("${data.json}")
+    @Value("${name.of.data1.file}")
     private String dataFileName;
 
     @Override
@@ -34,6 +33,10 @@ public class FileServiceImpl implements FileService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    @PostConstruct
+    private void init(){
+        readFromFile();
     }
 
     private boolean cleanDataFile(){

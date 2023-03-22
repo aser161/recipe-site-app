@@ -4,10 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.aserg.recipesiteapp.model.Ingredient;
-import me.aserg.recipesiteapp.services.FileService;
+import me.aserg.recipesiteapp.services.FileIngredientService;
 import me.aserg.recipesiteapp.services.IngredientService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -18,9 +19,9 @@ public class IngredientServiceImpl implements IngredientService {
     private static LinkedHashMap<Integer, Ingredient> ingredients = new LinkedHashMap<>();
     private static int counter = 0;
 
-    private final FileService fileService;
+    private final FileIngredientService fileService;
 
-    public IngredientServiceImpl(FileService fileService) {
+    public IngredientServiceImpl(FileIngredientService fileService) {
         this.fileService = fileService;
     }
 
@@ -48,6 +49,10 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public void deleteIngredient(int id){
         ingredients.remove(id);
+    }
+    @PostConstruct
+    private void init(){
+        readFromFile();
     }
 
     private void saveToFile(){
