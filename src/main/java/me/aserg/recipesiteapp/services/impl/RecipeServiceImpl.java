@@ -47,6 +47,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public void delete(int id){
         recipes.remove(id);
+        saveToFile();
     }
     @PostConstruct
     private void init(){

@@ -49,6 +49,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public void deleteIngredient(int id){
         ingredients.remove(id);
+        saveToFile();
     }
     @PostConstruct
     private void init(){
