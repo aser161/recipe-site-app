@@ -1,6 +1,7 @@
 package me.aserg.recipesiteapp.services;
 
 import java.io.File;
+import java.nio.file.Path;
 
 public interface FileRecipeService {
 
@@ -11,4 +12,6 @@ public interface FileRecipeService {
     File getDataFile();
 
     boolean cleanDataFile();
+
+    Path createTempFile(String suffix);
 }

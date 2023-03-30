@@ -3,6 +3,7 @@ package me.aserg.recipesiteapp.controllers;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.aserg.recipesiteapp.services.FileIngredientService;
 import me.aserg.recipesiteapp.services.FileRecipeService;
+import org.apache.catalina.connector.InputBuffer;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +20,6 @@ import java.io.*;
 @Tag(name = "Файл", description = "Работа с файлами")
 public class FileController {
     private final FileRecipeService fileRecipeService;
-
     private final FileIngredientService fileIngredientService;
 
     public FileController(FileRecipeService fileRecipeService, FileIngredientService fileIngredientService) {
@@ -43,6 +43,7 @@ public class FileController {
         }
     }
 
+
     @PostMapping(value = "/import/recipe", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void>uploadRecipeDataFile(@RequestParam MultipartFile file){
         fileRecipeService.cleanDataFile();
@@ -51,7 +52,6 @@ public class FileController {
         try(FileOutputStream fos = new FileOutputStream(recipeDataFile)) {
             IOUtils.copy(file.getInputStream(),fos);
             return ResponseEntity.ok().build();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,7 +68,6 @@ public class FileController {
         try(FileOutputStream fos = new FileOutputStream(ingredientDataFile)) {
             IOUtils.copy(file.getInputStream(),fos);
             return ResponseEntity.ok().build();
-
         } catch (IOException e) {
             e.printStackTrace();
         }

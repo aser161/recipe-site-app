@@ -35,6 +35,7 @@ public class FileRecipeServiceImpl implements FileRecipeService {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public File getDataFile(){
         return new File(dataFilePath + "/" + dataFileName);
@@ -48,6 +49,15 @@ public class FileRecipeServiceImpl implements FileRecipeService {
             return true;
         } catch (IOException e) {
             return false;
+        }
+    }
+
+    @Override
+    public Path createTempFile(String suffix){
+        try {
+            return Files.createTempFile(Path.of(dataFilePath),"tempFile",suffix);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

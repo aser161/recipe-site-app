@@ -8,6 +8,11 @@ import me.aserg.recipesiteapp.services.RecipeService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -37,6 +42,18 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Map<Integer, Recipe> getAll(){
         return recipes;
+    }
+
+    @Override
+    public Path createListRecipes() throws IOException {
+        Path path = fileRecipeService.createTempFile("ListRecipes");
+        for (Recipe recipe : recipes.values()) {
+            try (Writer writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)){
+                writer.append("Рецепт: " + recipe.getName() + "\nВремя готовки: " + recipe.getCookingTime() + "\nИнгредиенты: " + recipe.getIngredients());
+                writer.append("\n");
+            }
+        }
+        return path;
     }
 
     @Override

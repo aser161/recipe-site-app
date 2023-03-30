@@ -7,9 +7,17 @@ import me.aserg.recipesiteapp.model.Ingredient;
 import me.aserg.recipesiteapp.model.Recipe;
 import me.aserg.recipesiteapp.services.IngredientService;
 import me.aserg.recipesiteapp.services.RecipeService;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +58,26 @@ public class RecipeController {
     @Operation(summary = "Вывод всех рецептов",description = "Вывод всех рецептов в формате JSON")
     public Map<Integer, Recipe> getAll(){
         return recipeService.getAll();
+    }
+
+    @GetMapping("/download/list")
+    @Operation(summary = "Список всех рецептов", description = "Скачивание файла со списком всех рецептов в формате txt")
+    public ResponseEntity<Object>downloadListRecipes(){
+        try {
+            Path path = recipeService.createListRecipes();
+            if (Files.size(path) == 0){
+                return ResponseEntity.noContent().build();
+            }
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(path.toFile()));
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .contentLength(Files.size(path))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"recipes.txt\"")
+                    .body(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(e.toString());
+        }
     }
 
     @PutMapping("/{id}")
